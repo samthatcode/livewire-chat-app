@@ -51,5 +51,9 @@
 - Updated tests to reflect the changes
 - Some minor refactoring
 
+### 2nd Jan 2025
+- Updated to PHPStan 2.0 and Rector 2.0
+- Upgraded PHPStan to level 10 (maximum)
+
 More updates to come... 
 
