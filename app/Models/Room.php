@@ -31,7 +31,7 @@ class Room extends Model
     /**
      * Get the user that owns the room.
      *
-     * @return BelongsTo<User, Room>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -41,7 +41,7 @@ class Room extends Model
     /**
      * Get the members for the room.
      *
-     * @return BelongsToMany<User>
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {
@@ -51,7 +51,7 @@ class Room extends Model
     /**
      * Get the chats for the room.
      *
-     * @return HasMany<Chat>
+     * @return HasMany<Chat, $this>
      */
     public function chats(): HasMany
     {

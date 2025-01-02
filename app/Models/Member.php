@@ -27,7 +27,7 @@ class Member extends Model
     /**
      * Get the room that the member belongs to.
      *
-     * @return BelongsTo<Room, Member>
+     * @return BelongsTo<Room, $this>
      */
     public function room(): BelongsTo
     {
@@ -37,7 +37,7 @@ class Member extends Model
     /**
      * Get the user that the member belongs to.
      *
-     * @return BelongsTo<User, Member>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

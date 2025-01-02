@@ -31,6 +31,7 @@ class UpdatePasswordForm extends Component
         }
 
         try {
+            /** @var array<string, string> $validated */
             $validated = $this->validate([
                 'current_password' => ['required', 'string', 'current_password'],
                 'password' => ['required', 'string', Password::defaults(), 'confirmed'],

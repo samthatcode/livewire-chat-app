@@ -54,7 +54,7 @@ class User extends Authenticatable
     /**
      * Get the rooms for the user.
      *
-     * @return HasMany<Room>
+     * @return HasMany<Room ,$this>
      */
     public function rooms(): HasMany
     {

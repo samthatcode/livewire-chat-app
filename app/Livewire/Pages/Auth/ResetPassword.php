@@ -49,6 +49,9 @@ class ResetPassword extends Component
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        /** @var array<string, string> $data */
+        $data = $this->only('email', 'password', 'password_confirmation', 'token');
+
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
@@ -56,7 +59,7 @@ class ResetPassword extends Component
          * @var string
          */
         $status = Password::reset(
-            $this->only('email', 'password', 'password_confirmation', 'token'),
+            $data,
             function (User $user): void {
                 $user->forceFill([
                     'password' => Hash::make($this->password),

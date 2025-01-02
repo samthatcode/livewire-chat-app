@@ -28,7 +28,7 @@ class Chat extends Model
     /**
      * Get the user who sent the chat.
      *
-     * @return BelongsTo<User, Chat>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -38,7 +38,7 @@ class Chat extends Model
     /**
      * Get the room in which the chat was sent.
      *
-     * @return BelongsTo<Room, Chat>
+     * @return BelongsTo<Room, $this>
      */
     public function room(): BelongsTo
     {

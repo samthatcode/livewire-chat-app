@@ -36,6 +36,7 @@ class Create extends Component
             return;
         }
 
+        /** @var array{members: array<int>, name: string} $validated */
         $validated = $this->validate();
 
         $room = auth()->user()->rooms()->create([
