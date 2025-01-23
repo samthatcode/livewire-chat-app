@@ -2,13 +2,17 @@
     <div class="container mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Chats</h1>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                x-on:click="$dispatch('open-modal', 'create-room')">Create Chat</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
+                x-on:click="$dispatch('open-modal', 'create-room')"
+                title="Create Room"
+            >
+                <x-icons.add class="h-6 w-6" />
+            </button>
             <x-modal name="create-room">
                 <div class="p-4">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">
-                            Create Chat
+                            Create Room
                         </h2>
                         <button x-on:click="$dispatch('close-modal', 'create-room')"
                             x-on:room-created.window="$dispatch('close-modal', 'create-room')"
@@ -17,7 +21,7 @@
                         </button>
                     </div>
 
-                    <livewire:chats.create />
+                    <livewire:rooms.create />
                 </div>
             </x-modal>
         </div>
