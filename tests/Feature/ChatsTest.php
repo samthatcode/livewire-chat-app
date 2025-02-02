@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Chats\Create;
 use App\Livewire\Chats\Index;
 use App\Livewire\Chats\Sidebar;
 use App\Livewire\Pages\Chats;
+use App\Livewire\Rooms\Create;
 use App\Models\User;
 
 test('Chats page is displayed', function () {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Chats\Create;
+use App\Livewire\Rooms\Create;
 use App\Models\User;
 use Livewire\Livewire;
 
-it('can render the create chat component', function () {
+it('can render the create room component', function () {
     $this->actingAs(User::factory()->create());
 
     Livewire::test(Create::class)
         ->assertStatus(200)
-        ->assertViewIs('livewire.chats.create');
+        ->assertViewIs('livewire.rooms.create');
 });
 
 it('validates the name field', function () {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Chats;
+namespace App\Livewire\Rooms;
 
 use App\Models\User;
 use Illuminate\View\View;
@@ -55,7 +55,7 @@ class Create extends Component
 
     public function render(): View
     {
-        return view('livewire.chats.create', [
+        return view('livewire.rooms.create', [
             'users' => User::query()
                 ->where('id', '!=', auth()->id())
                 ->pluck('name', 'id'),
