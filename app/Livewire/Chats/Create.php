@@ -8,7 +8,7 @@ use Livewire\Component;
 class Create extends Component
 {
 
-    public int $roomId;
+    public ?int $roomId;
 
     #[Validate('required|string')]
     public string $message; 
