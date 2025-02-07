@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Chats;
 
 use App\Models\Chat;
+use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Validate;
@@ -19,7 +20,7 @@ class Create extends Component
     #[Validate('required|string')]
     public string $message;
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 
@@ -35,7 +36,7 @@ class Create extends Component
         $this->message = '';
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.chats.create');
     }
