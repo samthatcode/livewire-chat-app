@@ -30,6 +30,7 @@ class Create extends Component
             'message' => $this->message,
         ]);
 
+        $this->dispatch('chat:created');
         // clear the message input
         $this->message = '';
     }

@@ -35,6 +35,7 @@ class Index extends Component
         $this->roomId = $id;
     }
 
+    #[On('chat:created')]
     public function render(): View
     {
         // add 10 chats to the database with the factory
