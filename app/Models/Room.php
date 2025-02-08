@@ -21,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
- * @property-read Collection|User[] $users
+ * @property-read Collection<array-key, User> $users
  * @property-read Chat[] $chats
  */
 class Room extends Model
