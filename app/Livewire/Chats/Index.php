@@ -15,6 +15,7 @@ use Livewire\Component;
 /**
  * @property-read ?Room $room
  */
+#[On('chat:created')]
 class Index extends Component
 {
     #[Locked]
@@ -35,7 +36,6 @@ class Index extends Component
         $this->roomId = $id;
     }
 
-    #[On('chat:created')]
     public function render(): View
     {
         // add 10 chats to the database with the factory
