@@ -4,6 +4,7 @@ declare(strict_types=1);
 use App\Livewire\Chats\Create;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Livewire;
 
 it('can render the create chat component', function () {
@@ -20,33 +21,30 @@ it('validates the message field', function () {
     Livewire::test(Create::class)
         ->set('message', '')
         ->call('create')
-        ->assertHasErrors(['message', 'roomId']);
+        ->assertHasErrors(['message']);
 
 });
 
-it('validates the roomId field', function () {
+it('checks for exception when roomId is null ', function () {
     $this->actingAs(User::factory()->create());
 
-    $room = Room::factory()->create();
+    $this->expectException(ModelNotFoundException::class);
 
-    // test if the roomId is required
     Livewire::test(Create::class, ['roomId' => null])
         ->set('message', 'test message')
         ->call('create')
-        ->assertHasErrors(['roomId']);
+        ->assertNotFound();
+});
 
-    // test if the roomId is not an integer
-    Livewire::test(Create::class, ['roomId' => '123'])
-        ->set('message', 'test message')
-        ->call('create')
-        ->assertHasErrors(['roomId']);
+it('checks for exception when roomId is invalid', function () {
+    $this->actingAs(User::factory()->create());
 
-    // test if the roomId is not exists
+    $this->expectException(ModelNotFoundException::class);
+
     Livewire::test(Create::class, ['roomId' => 123])
         ->set('message', 'test message')
         ->call('create')
-        ->assertHasErrors(['roomId']);
-
+        ->assertNotFound();
 });
 
 it('can create a chat', function () {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Chats;
 
-use App\Models\Chat;
 use App\Models\Room;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
@@ -17,7 +16,6 @@ class Create extends Component
 {
     #[Locked]
     #[Reactive]
-    #[Validate('required|integer|exists:rooms,id')]
     public ?int $roomId = null;
 
     #[Validate('required|string')]
@@ -29,19 +27,18 @@ class Create extends Component
 
         $room = Room::query()->findOrFail($this->roomId);
 
-        $users = $room->users;
+        $member_exists = $room->users()
+            ->where('user_id', auth()->id())
+            ->exists();
 
-        Gate::denyIf(! $users->contains('id', '==', auth()->id()), 'You are not a member of this room.');
+        Gate::denyIf(! $member_exists, 'You are not a member of this room.');
 
-        Chat::factory()->create([
-            'room_id' => $this->roomId,
+        $room->chats()->create([
             'user_id' => auth()->id(),
-            'message' => $this->message,
+            'message' => $this->pull('message'),
         ]);
 
         $this->dispatch('chat:created');
-
-        $this->reset('message');
     }
 
     public function render(): View
