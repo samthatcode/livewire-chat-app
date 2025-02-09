@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Chats;
 
-use App\Models\Chat;
 use App\Models\Room;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
@@ -42,7 +41,7 @@ class Index extends Component
         // Chat::factory()->count(10)->create(['room_id' => $this->roomId]); // only uncomment once
         return view('livewire.chats.index', [
             'room' => $this->room,
-            'chats' => $this->room !== null ? Chat::query()->where('room_id', $this->roomId)->get() : [],
+            'chats' => $this->room !== null ? $this->room->chats()->latest()->get() : [],
         ]);
     }
 }
