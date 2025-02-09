@@ -61,6 +61,9 @@
 ### 9th Feb 2025
 - bump dependencies
 - Fixed PHPStan version to 2.1.2 due to a type coverage issue. Will update it after this PR [#39](https://github.com/pestphp/pest-plugin-type-coverage/pull/39) is merged.
+- Added Show component for chat messages
+- refactored some code
+- Added Index component for Rooms
 
 More updates to come... 
 
