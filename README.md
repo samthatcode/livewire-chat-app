@@ -56,7 +56,7 @@
 - Upgraded PHPStan to level 10 (maximum)
 
 ### 2nd Feb 2025
-- Merge PR [#3](https://github.com/MrPunyapal/livewire-chat-app/pull/3) from @JaiveerChavda
+- Merge PR [#3](https://github.com/MrPunyapal/livewire-chat-app/pull/3) from [@JaiveerChavda](https://github.com/JaiveerChavda)
 
 ### 9th Feb 2025
 - bump dependencies
