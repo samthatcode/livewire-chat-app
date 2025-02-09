@@ -1,8 +1,7 @@
-<div class="mt-4" x-data="{ message: ''}">
+<div class="mt-4">
     <form wire:submit="create">
         <div class="flex items-center gap-3">
             <input type="text" 
-                x-model="message"
                 wire:model="message"                
                 required
                 @class([
@@ -15,8 +14,8 @@
             
             <button type="submit"
             class="text-white font-bold bg-blue-500 py-2 px-4 rounded disabled:cursor-not-allowed"
-                :class="message.length === 0 ? 'disabled:opacity-50' : '' "
-                :disabled="message.length === 0"         
+                :class="$wire.message.length === 0 ? 'disabled:opacity-50' : '' "
+                :disabled="$wire.message.length === 0"         
             >
                 Send                
             </button>
