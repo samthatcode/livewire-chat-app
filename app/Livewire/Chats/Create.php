@@ -27,11 +27,11 @@ class Create extends Component
 
         $room = Room::query()->findOrFail($this->roomId);
 
-        $member_exists = $room->users()
+        $memberExists = $room->users()
             ->where('user_id', auth()->id())
             ->exists();
 
-        Gate::denyIf(! $member_exists, 'You are not a member of this room.');
+        Gate::denyIf(! $memberExists, 'You are not a member of this room.');
 
         $room->chats()->create([
             'user_id' => auth()->id(),
