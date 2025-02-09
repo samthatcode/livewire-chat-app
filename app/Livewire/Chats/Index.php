@@ -15,6 +15,7 @@ use Livewire\Component;
 /**
  * @property-read ?Room $room
  */
+#[On('chat:created')]
 class Index extends Component
 {
     #[Locked]
