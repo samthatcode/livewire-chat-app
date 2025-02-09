@@ -1,7 +1,8 @@
 <?php
 
 declare(strict_types=1);
-use App\Livewire\Chats\Sidebar;
+
+use App\Livewire\Rooms\Index;
 use App\Models\Room;
 use App\Models\User;
 use Livewire\Livewire;
@@ -17,7 +18,7 @@ test('sidebar component contains rooms', function () {
     $room = Room::factory()->create();
 
     Livewire::actingAs($user)
-        ->test(Sidebar::class)
+        ->test(Index::class)
         ->assertViewHas('rooms', $rooms)
         ->assertDontSee($room->name)
         ->assertDontSee('No rooms found');
@@ -27,6 +28,6 @@ test('sidebar component without rooms', function () {
     $user = User::factory()->create();
 
     Livewire::actingAs($user)
-        ->test(Sidebar::class)
+        ->test(Index::class)
         ->assertSee('No rooms found');
 });

@@ -1,4 +1,4 @@
 <div class="flex overflow-hidden">
-    <livewire:chats.sidebar />
+    <livewire:rooms.index />
     <livewire:chats.index />
 </div>
