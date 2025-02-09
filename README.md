@@ -64,6 +64,7 @@
 - Added Show component for chat messages
 - refactored some code
 - Added Index component for Rooms
+- Merge PR [#4](https://github.com/MrPunyapal/livewire-chat-app/pull/4) from [@JaiveerChavda](https://github.com/JaiveerChavda)
 
 More updates to come... 
 
