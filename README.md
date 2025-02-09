@@ -56,11 +56,11 @@
 - Upgraded PHPStan to level 10 (maximum)
 
 ### 2nd Feb 2025
-- Merge PR [#3] from @JaiveerChavda
+- Merge PR [#3](https://github.com/MrPunyapal/livewire-chat-app/pull/3) from @JaiveerChavda
 
 ### 9th Feb 2025
 - bump dependencies
-- Fixed PHPStan version to 2.1.2 due to a type coverage issue. Will update it after this PR [#39](https://github.com/pestphp/pest-plugin-type-coverage/pull/39) is merged.
+- Fixed PHPStan to V2.1.2 for type coverage issue. Check [#39](https://github.com/pestphp/pest-plugin-type-coverage/pull/39).
 - Added Show component for chat messages
 - refactored some code
 - Added Index component for Rooms
