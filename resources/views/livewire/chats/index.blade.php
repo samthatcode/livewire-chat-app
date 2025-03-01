@@ -4,8 +4,8 @@
             <div class="flex items-center gap-3">
                 @if ($room !== null)
                     <figure
-                        class="rounded h-10 w-10 flex-shrink-0 transition-opacity group-hover:opacity-90 {{ $room->user->profile }}">
-                        <img src="{{ $room->user->profile }}" alt="{{ $room->user->name }}" class="rounded h-10 w-10" />
+                        class="rounded-sm h-10 w-10 shrink-0 transition-opacity group-hover:opacity-90 {{ $room->user->profile }}">
+                        <img src="{{ $room->user->profile }}" alt="{{ $room->user->name }}" class="rounded-sm h-10 w-10" />
                     </figure>
                     <p class="text-xl font-bold text-gray-800 dark:text-gray-100">{{ $room->name }}</p>
                 @else

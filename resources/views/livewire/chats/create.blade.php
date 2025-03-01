@@ -14,7 +14,7 @@
             />
 
             <button type="submit"
-                class="text-white font-bold bg-blue-500 py-2 px-4 rounded disabled:cursor-not-allowed"
+                class="text-white font-bold bg-blue-500 py-2 px-4 rounded-sm disabled:cursor-not-allowed"
                 :class="$wire.message.length === 0 ? 'disabled:opacity-50' : '' "
                 :disabled="$wire.message.length === 0"
             >

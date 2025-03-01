@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Chats</h1>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-sm"
                 x-on:click="$dispatch('open-modal', 'create-room')"
                 title="Create Room"
             >
@@ -33,9 +33,9 @@
                         x-on:click="$dispatch('room-selected', { id: {{ $room->id }} })">
                         <div class="group flex items-center gap-3 px-4">
                             <figure
-                                class="rounded h-10 w-10 flex-shrink-0 transition-opacity group-hover:opacity-90 {{ $room->user->profile }}">
+                                class="rounded-sm h-10 w-10 shrink-0 transition-opacity group-hover:opacity-90 {{ $room->user->profile }}">
                                 <img src="{{ $room->user->profile }}" alt="{{ $room->user->name }}"
-                                    class="rounded h-10 w-10" />
+                                    class="rounded-sm h-10 w-10" />
                             </figure>
 
                             <div class="overflow-hidden text-sm dark:text-gray-100">

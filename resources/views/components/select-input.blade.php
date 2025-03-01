@@ -14,7 +14,7 @@
 
 <select {{ $disabled ? 'disabled' : '' }} id="{{ $id }}" name="{{ $name }}" {!! $attributes->merge([
     'class' =>
-        'w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm',
+        'w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-xs',
 ]) !!}
     {{ $multiple ? 'multiple' : '' }}>
     @if ($placeholder)

@@ -3,7 +3,7 @@
 'justify-end' => $isCurrentUser,
 ])>
     @if (! $isCurrentUser)
-        <figure class="flex flex-shrink-0 self-start">
+        <figure class="flex shrink-0 self-start">
             <img src="{{ $chat->user->profile }}" alt="{{ $chat->user->name }}"
                 class="h-8 w-8 object-cover rounded-full">
         </figure>
@@ -32,7 +32,7 @@
         </div>
     </div>
     @if ($isCurrentUser)
-        <figure class="flex flex-shrink-0 self-start">
+        <figure class="flex shrink-0 self-start">
             <img src="{{ $chat->user->profile }}" alt="{{ $chat->user->name }}"
                 class="h-8 w-8 object-cover rounded-full">
         </figure>
