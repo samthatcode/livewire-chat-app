@@ -66,5 +66,9 @@
 - Added Index component for Rooms
 - Merge PR [#4](https://github.com/MrPunyapal/livewire-chat-app/pull/4) from [@JaiveerChavda](https://github.com/JaiveerChavda)
 
+### 1st Mar 2025
+- Updated Laravel to version 12.0
+- Updated TailwindCSS to version 4.0
+
 More updates to come... 
 
