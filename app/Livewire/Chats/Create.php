@@ -21,7 +21,7 @@ class Create extends Component
     #[Validate('required|string')]
     public string $message;
 
-    public function create(): void
+    public function store(): void
     {
         $this->validate();
 
