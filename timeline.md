@@ -73,6 +73,8 @@
 ### 2nd Mar 2025
 - Added a notification component
 - refactored create chat code
+- moved timeline to timeline.md
+- Added instructions for app setup in README.md
 
 More updates to come... 
 

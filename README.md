@@ -1,8 +1,6 @@
 # Livewire Chat App
 
-[![Tests](https://github.com/mr-punyapal/livewire-chat-app/actions/workflows/tests.yml/badge.svg)](https://github.com/mrpunyapal/livewire-chat-app/actions/workflows/tests.yml)
-
-## It's WIP check [Timeline](timeline.md)
+### It's WIP check [Timeline](timeline.md)
 
 ## Getting Started 🚀
 
