@@ -1,78 +1,109 @@
-# livewire-chat-app with Laravel Reverb
-## Timeline
+# Livewire Chat App
 
-### 31st Aug
-- Created a new Laravel project #initialCommit with Breeze
-- Installed broadcasting with `php artisan install:broadcasting` to enable broadcasting functionality
-- Added pint configuration check [here](/pint.json)
-- Integrated rector with support for Laravel-rector  
-- Implemented phpstan with support for larastan with bleeding edge support
-- Replaced volt with traditional livewire components
+[![Tests](https://github.com/mr-punyapal/livewire-chat-app/actions/workflows/tests.yml/badge.svg)](https://github.com/mrpunyapal/livewire-chat-app/actions/workflows/tests.yml)
 
-### 1st Sep
-- Adjusted layouts to work with livewire full page components
-- Added pest type coverage to ensure full type safety
-- Removed email verification as it is not needed in our case
-- Optimized tests for livewire components
-- Expanded test coverage to reach 100%
-- Created Room model, migration, factory, and tests
-- Created Member model, migration, factory, and tests
-- Created Chat model, migration, factory, and tests
-- Established relationships between Room, Member, and Chat, and added tests for them
+## It's WIP check [Timeline](timeline.md)
 
-### 2nd Sep
-- Moved dashboard and Profile components to pages directory
-- Added Profile Attribute to User model and updated tests
-- Created Chats component and added tests
-- Refactored web.php to use middleware group for auth routes
-- designed the sidebar and added the sidebar component
-- Added tests for the sidebar component with and without rooms
+## Getting Started 🚀
 
-### 3rd Sep
-- We got our first PR [#1](https://github.com/MrPunyapal/livewire-chat-app/pull/1)
+These instructions will guide you through setting up the project on your local machine for development and testing.
 
-### 7th Sep
-- Updated dependencies
-- Added chats into navigation
-- Designed Chats UI and moved it into component
-- Added some tests to make sure everything is going right.
+### Prerequisites
 
-### 5th Oct
-- Added a Select component
-- Added a create room feature
-- Added a switch room feature
-- Added tests for the new features
-- Some minor refactoring
+You need to have installed the following software:
 
-### 6th Oct
-- Updated dependencies
-- Updated sidebar to show rooms from user
-- Updated index component to room from user
-- Updated tests to reflect the changes
-- Some minor refactoring
+- PHP 8.3
+- Composer 2.0.8
+- Node 20.10.0
 
-### 2nd Jan 2025
-- Updated to PHPStan 2.0 and Rector 2.0
-- Upgraded PHPStan to level 10 (maximum)
+### Installing
 
-### 2nd Feb 2025
-- Merge PR [#3](https://github.com/MrPunyapal/livewire-chat-app/pull/3) from [@JaiveerChavda](https://github.com/JaiveerChavda)
+Follow these steps to set up a development environment:
 
-### 9th Feb 2025
-- bump dependencies
-- Fixed PHPStan to V2.1.2 for type coverage issue. Check [#39](https://github.com/pestphp/pest-plugin-type-coverage/pull/39).
-- Added Show component for chat messages
-- refactored some code
-- Added Index component for Rooms
-- Merge PR [#4](https://github.com/MrPunyapal/livewire-chat-app/pull/4) from [@JaiveerChavda](https://github.com/JaiveerChavda)
+1. **Clone the repository**
 
-### 1st Mar 2025
-- Updated Laravel to version 12.0
-- Updated TailwindCSS to version 4.0
+    ```bash
+    git clone https://github.com/mrpunyapal/livewire-chat-app.git
+    ```
 
-### 2nd Mar 2025
-- Added a notification component
-- refactored create chat code
+2. **Install dependencies**
 
-More updates to come... 
+    ```bash
+    composer install
+    ```
 
+    ```bash
+    npm install
+    ```
+
+3. **Duplicate the .env.example file and rename it to .env**
+
+    ```bash
+    cp .env.example .env
+    ```
+
+4. **Generate the application key**
+
+    ```bash
+    php artisan key:generate
+    ```
+
+5. **Run migration and seed**
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+6. **Run the application**
+
+    ```bash
+    npm run dev
+    ```
+
+    ```bash
+    php artisan serve
+    ```
+
+## How to Test the Application 🧪
+
+- Copy .env.testing.example to .env.testing
+- Run the following commands
+
+    ```bash
+    php artisan key:generate --env=testing
+    ```
+
+    ```bash
+    npm install && npm run build
+    ```
+
+    ```bash
+    # Lint the code using Pint
+    composer lint
+    composer test:lint
+
+    # Refactor the code using Rector
+    composer refactor
+    composer test:refactor
+
+    # Run PHPStan
+    composer test:types
+
+    # Run type coverage
+    composer test:type-coverage
+
+    # Run the test suite
+    composer test:unit
+
+    # Run all the tests
+    composer test
+    ```
+Check [composer.json](/composer.json#L57-L71) for more details on scripts.
+
+### Give Feedback 💬
+
+Give your feedback on [@MrPunyapal](https://x.com/MrPunyapal)
+
+### Contribute 🤝
+
+Contribute if you have any ideas to improve this project.
