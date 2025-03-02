@@ -20,7 +20,7 @@ it('validates the message field', function () {
 
     Livewire::test(Create::class)
         ->set('message', '')
-        ->call('create')
+        ->call('store')
         ->assertHasErrors(['message']);
 
 });
@@ -32,7 +32,7 @@ it('checks for exception when roomId is null ', function () {
 
     Livewire::test(Create::class, ['roomId' => null])
         ->set('message', 'test message')
-        ->call('create')
+        ->call('store')
         ->assertNotFound();
 });
 
@@ -43,7 +43,7 @@ it('checks for exception when roomId is invalid', function () {
 
     Livewire::test(Create::class, ['roomId' => 123])
         ->set('message', 'test message')
-        ->call('create')
+        ->call('store')
         ->assertNotFound();
 });
 
@@ -62,7 +62,7 @@ it('can create a chat', function () {
 
     Livewire::test(Create::class, ['roomId' => $room->id])
         ->set('message', 'message from John')
-        ->call('create')
+        ->call('store')
         ->assertDispatched('chat:created');
 
     $this->assertDatabaseHas('chats', ['message' => 'message from John']);
@@ -81,7 +81,7 @@ it('can not create a chat as an invalid user/member ', function () {
 
     Livewire::test(Create::class, ['roomId' => $room->id])
         ->set('message', 'message from John')
-        ->call('create')
+        ->call('store')
         ->assertStatus(403);
 
 });
