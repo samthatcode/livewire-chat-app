@@ -70,5 +70,8 @@
 - Updated Laravel to version 12.0
 - Updated TailwindCSS to version 4.0
 
+### 2nd Mar 2025
+- Added a notification component
+
 More updates to come... 
 
