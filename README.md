@@ -72,6 +72,7 @@
 
 ### 2nd Mar 2025
 - Added a notification component
+- refactored create chat code
 
 More updates to come... 
 
