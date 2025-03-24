@@ -37,6 +37,8 @@
                 @endforelse
             </div>
         </div>
-        <livewire:chats.create :$roomId />
+        @if ($room !== null)
+            <livewire:chats.create :$roomId />
+        @endif
     </div>
 </div>
