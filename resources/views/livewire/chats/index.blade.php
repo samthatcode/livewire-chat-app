@@ -21,8 +21,8 @@
             </div>
         </div>
         <div
-            class="mt-4 h-[calc(100vh-210px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <div class="flex flex-col flex-col-reverse gap-4">
+            class="mt-4 h-[calc(100vh-210px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 flex flex-col-reverse">
+            <div class="flex flex-col-reverse gap-4">
                 @forelse ($chats as $chat)
                     <livewire:chats.show
                         :chat="$chat"
@@ -38,7 +38,14 @@
             </div>
         </div>
         @if ($room !== null)
-            <livewire:chats.create :$roomId />
+            <livewire:chats.create :roomId="$room->id" key="create-chat-{{ $room->id }}" />
         @endif
     </div>
+    @script
+    <script>
+        $wire.on('room-closed', (e) => {
+            window.Echo.leave(`chats.${e.roomId}`);
+        });
+    </script>
+    @endscript
 </div>

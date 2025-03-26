@@ -33,6 +33,8 @@ class Index extends Component
     #[On('room-selected')]
     public function selectRoom(int $id): void
     {
+        $this->dispatch('room-closed', roomId: $this->roomId);
+
         $this->roomId = $id;
     }
 
