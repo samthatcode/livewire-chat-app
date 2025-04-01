@@ -46,6 +46,7 @@ class Room extends Model
      */
     public function users(): BelongsToMany
     {
+        // @phpstan-ignore-next-line
         return $this->belongsToMany(User::class, 'members');
     }
 
