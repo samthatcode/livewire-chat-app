@@ -1,7 +1,7 @@
-export const storeChat = () => ({
-    async store() {
+export const saveChat = () => ({
+    async save() {
         if (this.$wire.message === '') return;
-        await this.$wire.store();
+        await this.$wire.save();
         this.$wire.message = '';
     }
 })

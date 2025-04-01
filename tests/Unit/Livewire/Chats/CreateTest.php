@@ -9,31 +9,17 @@ use Livewire\Livewire;
 
 it('can render the create chat component', function () {
     Livewire::actingAs(User::factory()->create())
-        ->test(Create::class)
+        ->test(Create::class, ['roomId' => Room::factory()->create()->getKey()])
         ->assertStatus(200)
         ->assertViewIs('livewire.chats.create');
 });
 
 it('validates the message field', function () {
-
-    $this->actingAs(User::factory()->create());
-
-    Livewire::test(Create::class)
+    Livewire::actingAs(User::factory()->create())
+        ->test(Create::class, ['roomId' => Room::factory()->create()->getKey()])
         ->set('message', '')
-        ->call('store')
+        ->call('save')
         ->assertHasErrors(['message']);
-
-});
-
-it('checks for exception when roomId is null ', function () {
-    $this->actingAs(User::factory()->create());
-
-    $this->expectException(ModelNotFoundException::class);
-
-    Livewire::test(Create::class, ['roomId' => null])
-        ->set('message', 'test message')
-        ->call('store')
-        ->assertNotFound();
 });
 
 it('checks for exception when roomId is invalid', function () {
@@ -43,7 +29,7 @@ it('checks for exception when roomId is invalid', function () {
 
     Livewire::test(Create::class, ['roomId' => 123])
         ->set('message', 'test message')
-        ->call('store')
+        ->call('save')
         ->assertNotFound();
 });
 
@@ -62,7 +48,7 @@ it('can create a chat', function () {
 
     Livewire::test(Create::class, ['roomId' => $room->id])
         ->set('message', 'message from John')
-        ->call('store')
+        ->call('save')
         ->assertDispatched('chat:created');
 
     $this->assertDatabaseHas('chats', ['message' => 'message from John']);
@@ -81,7 +67,109 @@ it('can not create a chat as an invalid user/member ', function () {
 
     Livewire::test(Create::class, ['roomId' => $room->id])
         ->set('message', 'message from John')
-        ->call('store')
+        ->call('save')
         ->assertStatus(403);
 
+});
+
+it('can edit a chat', function () {
+
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    // other user
+    $jane = User::factory()->create(['name' => 'Jane Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $jane->id]);
+
+    $room->users()->attach([$john->id, $jane->id]);
+
+    Livewire::test(Create::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Create::class, ['roomId' => $room->id])
+        ->set('message', 'edited message from John')
+        ->dispatch('chat-editing', chatId: 1, message: 'edited message from John')
+        ->call('save')
+        ->assertDispatched('chat:updated.1');
+
+    $this->assertDatabaseHas('chats', ['message' => 'edited message from John']);
+});
+
+it('can not edit a chat as an invalid user/member ', function () {
+
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    // other user
+    $jane = User::factory()->create(['name' => 'Jane Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $jane->id]);
+
+    $room->users()->attach([$john->id, $jane->id]);
+
+    Livewire::test(Create::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::actingAs($jane)
+        ->test(Create::class, ['roomId' => $room->id])
+        ->set('message', 'edited message from John')
+        ->dispatch('chat-editing', chatId: 1, message: 'edited message from John')
+        ->call('save')
+        ->assertStatus(403);
+});
+
+it('sets chatId and message for chat-editing event', function () {
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $john->id]);
+
+    $room->users()->attach([$john->id]);
+
+    Livewire::test(Create::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Create::class, ['roomId' => $room->id])
+        ->dispatch('chat-editing', chatId: 1, message: 'edited message from John')
+        ->assertSet('chatId', 1)
+        ->assertSet('message', 'edited message from John');
+});
+
+it('can listen to echo events', function (): void {
+    Livewire::actingAs(User::factory()->create())
+        ->test(Create::class, ['roomId' => Room::factory()->create()->getKey()])
+        ->call('chatCreated', [
+            'roomId' => 1,
+            'chatId' => 1,
+        ])
+        ->assertDispatched('chat:created')
+        ->call('chatUpdated', [
+            'roomId' => 1,
+            'chatId' => 1,
+        ])
+        ->assertDispatched('chat:updated.1');
+});
+
+it('can cancel the editing', function (): void {
+    Livewire::actingAs(User::factory()->create())
+        ->test(Create::class, [
+            'roomId' => Room::factory()->create()->getKey(),
+            'chatId' => 1,
+            'message' => 'test message',
+        ])
+        ->assertSet('chatId', 1)
+        ->assertSet('message', 'test message')
+        ->call('cancel')
+        ->assertSet('chatId', null)
+        ->assertSet('message', '');
 });

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Chats\Index as ChatsIndex;
 use App\Livewire\Chats\Create as CreateChat;
+use App\Livewire\Chats\Index as ChatsIndex;
 use App\Livewire\Pages\Chats;
 use App\Livewire\Rooms\Create as CreateRoom;
 use App\Livewire\Rooms\Index as RoomsIndex;
@@ -23,14 +23,14 @@ test('chats page is displayed', function () {
         ->assertOk();
 });
 
-test('create chat component should be there if room is selected', function () : void {
+test('create chat component should be there if room is selected', function (): void {
     $user = User::factory()->create();
     $room = Room::factory()
         ->hasAttached($user, relationship: 'users')
         ->create();
 
     $this->actingAs($user)
-        ->get('/chats?roomId=' . $room->id)
+        ->get('/chats?roomId='.$room->id)
         ->assertSeeLivewire(Chats::class)
         ->assertSeeLivewire(ChatsIndex::class)
         ->assertSeeLivewire(RoomsIndex::class)
