@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
+use RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -35,4 +36,8 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_ELOQUENT_MAGIC_METHOD_TO_QUERY_BUILDER,
         LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
         LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
+    ])->withConfiguredRule(EloquentMagicMethodToQueryBuilderRector::class, [
+        'exclude_methods' => [
+            'create',
+        ],
     ])->withImportNames();
