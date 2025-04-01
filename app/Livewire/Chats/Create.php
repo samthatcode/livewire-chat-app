@@ -59,7 +59,7 @@ class Create extends Component
                 roomId: $this->roomId,
             ))->toOthers();
 
-            $this->dispatch('chat:updated.'.$this->chatId);
+            $this->dispatch('chat:updated.'.$this->pull('chatId'));
 
             return;
         }
