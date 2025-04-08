@@ -24,6 +24,7 @@
             class="mt-4 h-[calc(100vh-210px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 flex flex-col-reverse">
             <livewire:chats.list-chats
                 :roomId="$roomId"
+                :key="'list-chats-'.$roomId.'-0'"
             />
         </div>
         @if ($room !== null)

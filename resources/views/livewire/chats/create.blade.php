@@ -54,7 +54,6 @@
     @script
         <script>
             $wire.on('chat:created', (e) => {
-                alert('Chat created successfully');
                 const mainContainer = 'list-chats';
                 const currentContainer = 'created-chat';
 
