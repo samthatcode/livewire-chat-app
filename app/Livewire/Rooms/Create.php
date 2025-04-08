@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Rooms;
 
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\View\View;
 use Livewire\Attributes\Validate;
@@ -39,8 +40,9 @@ class Create extends Component
         /** @var array{members: array<int>, name: string} $validated */
         $validated = $this->validate();
 
-        $room = auth()->user()->rooms()->create([
-            'name' => $validated['name'],
+        $room = Room::create([
+            'name' => $this->pull('name'),
+            'user_id' => auth()->id(),
         ]);
 
         $validated['members'][] = auth()->id();

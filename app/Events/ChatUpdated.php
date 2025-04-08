@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatCreated implements ShouldBroadcast
+class ChatUpdated implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -39,6 +39,6 @@ class ChatCreated implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'chat-created';
+        return 'chat-updated';
     }
 }

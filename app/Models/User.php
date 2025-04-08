@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -54,11 +54,13 @@ class User extends Authenticatable
     /**
      * Get the rooms for the user.
      *
-     * @return HasMany<Room ,$this>
+     * @return BelongsToMany<Room, $this>
      */
-    public function rooms(): HasMany
+    public function rooms(): BelongsToMany
     {
-        return $this->hasMany(Room::class);
+        // @phpstan-ignore-next-line
+        return $this->belongsToMany(Room::class, 'members')
+            ->withTimestamps();
     }
 
     /**

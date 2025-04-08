@@ -13,3 +13,15 @@ it('can render', function (): void {
         ->assertSee($chat->message)
         ->assertSee($chat->user->name);
 });
+
+it('can edit', function (): void {
+    $chat = Chat::factory()->create();
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->call('edit')
+        ->assertDispatched('chat-editing',
+            chatId: $chat->id,
+            message: $chat->message,
+        );
+});
