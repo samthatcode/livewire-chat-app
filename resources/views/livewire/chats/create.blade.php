@@ -1,4 +1,16 @@
 <div class="mt-4">
+    <div
+        class="hidden"
+        id="created-chat"
+    >
+        @if ($createdChat)
+            <livewire:chats.show
+                :chat="$createdChat"
+                :key="'chat-' . $createdChat->id"
+            />
+        @endif
+    </div>
+
     <div x-data="saveChat">
         <div class="flex items-center gap-3">
             <x-text-input
@@ -11,7 +23,7 @@
                 placeholder="Type your message here..."
             />
 
-            @if($chatId === null)
+            @if ($chatId === null)
                 <button
                     type="button"
                     x-on:click="save"
@@ -38,4 +50,22 @@
             @endif
         </div>
     </div>
+
+    @script
+        <script>
+            $wire.on('chat:created', (e) => {
+                alert('Chat created successfully');
+                const mainContainer = 'list-chats';
+                const currentContainer = 'created-chat';
+
+                requestAnimationFrame(() => {
+                    const currentElement = document.getElementById(currentContainer);
+                    const mainElement = document.getElementById(mainContainer);
+                    while (currentElement.firstChild) {
+                        mainElement.prepend(currentElement.firstChild);
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>

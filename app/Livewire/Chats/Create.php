@@ -6,6 +6,7 @@ namespace App\Livewire\Chats;
 
 use App\Events\ChatCreated;
 use App\Events\ChatUpdated;
+use App\Models\Chat;
 use App\Models\Room;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
@@ -26,6 +27,8 @@ class Create extends Component
 
     #[Locked]
     public ?int $chatId = null;
+
+    private ?Chat $createdChat = null;
 
     #[On('chat-editing')]
     public function startEditing(int $chatId, string $message): void
@@ -74,6 +77,8 @@ class Create extends Component
             roomId: $this->roomId,
         ))->toOthers();
 
+        $this->createdChat = $chat;
+
         $this->dispatch('chat:created');
     }
 
@@ -83,6 +88,10 @@ class Create extends Component
     #[On('echo-private:chats.{roomId},.chat-created')]
     public function chatCreated(array $event): void
     {
+        $this->createdChat = Chat::query()
+            ->whereKey($event['chatId'])
+            ->first();
+
         $this->dispatch('chat:created');
     }
 
@@ -103,6 +112,8 @@ class Create extends Component
 
     public function render(): View
     {
-        return view('livewire.chats.create');
+        return view('livewire.chats.create',[
+            'createdChat' => $this->createdChat,
+        ]);
     }
 }

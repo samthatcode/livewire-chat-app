@@ -15,7 +15,6 @@ use Livewire\Component;
 /**
  * @property-read ?Room $room
  */
-#[On('chat:created')]
 class Index extends Component
 {
     #[Locked]
@@ -44,7 +43,6 @@ class Index extends Component
         // Chat::factory()->count(10)->create(['room_id' => $this->roomId]); // only uncomment once
         return view('livewire.chats.index', [
             'room' => $this->room,
-            'chats' => $this->room !== null ? $this->room->chats()->latest()->get() : [],
         ]);
     }
 }
