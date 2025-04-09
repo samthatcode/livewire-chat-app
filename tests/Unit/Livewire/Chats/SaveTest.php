@@ -46,10 +46,12 @@ it('can create a chat', function () {
 
     $room->users()->attach($john->id);
 
-    Livewire::test(Save::class, ['roomId' => $room->id])
+    $component = Livewire::test(Save::class, ['roomId' => $room->id])
         ->set('message', 'message from John')
         ->call('save')
         ->assertDispatched('chat:created');
+
+    expect($component->invade()->createdChat)->not->toBeNull();
 
     $this->assertDatabaseHas('chats', ['message' => 'message from John']);
 });
@@ -146,18 +148,27 @@ it('sets chatId and message for chat-editing event', function () {
 });
 
 it('can listen to echo events', function (): void {
-    Livewire::actingAs(User::factory()->create())
-        ->test(Save::class, ['roomId' => Room::factory()->create()->getKey()])
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+    $chat = $room->chats()->create([
+        'user_id' => $user->id,
+        'message' => 'test message',
+    ]);
+
+    $component = Livewire::actingAs($user)
+        ->test(Save::class, ['roomId' => $room->id])
         ->call('chatCreated', [
-            'roomId' => 1,
-            'chatId' => 1,
+            'roomId' => $room->id,
+            'chatId' => $chat->id,
         ])
-        ->assertDispatched('chat:created')
-        ->call('chatUpdated', [
-            'roomId' => 1,
-            'chatId' => 1,
-        ])
-        ->assertDispatched('chat:updated.1');
+        ->assertDispatched('chat:created');
+    expect($component->invade()->createdChat)->not->toBeNull();
+
+    $component->call('chatUpdated', [
+        'roomId' => 1,
+        'chatId' => 1,
+    ])
+    ->assertDispatched('chat:updated.1');
 });
 
 it('can cancel the editing', function (): void {
