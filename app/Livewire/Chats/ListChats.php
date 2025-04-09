@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ListChats extends Component
 {
-    public ?int $roomId = null;
+    public int $roomId;
 
     public int $limit = 10;
 
@@ -42,16 +42,16 @@ class ListChats extends Component
         }
 
         return view('livewire.chats.list-chats', [
-            'chats' => $this->roomId !== null ? Chat::query()
+            'chats' => Chat::query()
                 ->where('room_id', $this->roomId)
-                ->whereHas('room.users', function ($query) {
+                ->whereHas('room.users', function ($query): void {
                     $query->where('users.id', auth()->id());
                 })
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->limit($this->limit)
                 ->offset($this->offset)
-                ->get() : [],
+                ->get(),
         ]);
     }
 }

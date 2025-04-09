@@ -168,7 +168,7 @@ it('can listen to echo events', function (): void {
         'roomId' => 1,
         'chatId' => 1,
     ])
-    ->assertDispatched('chat:updated.1');
+        ->assertDispatched('chat:updated.1');
 });
 
 it('can cancel the editing', function (): void {
