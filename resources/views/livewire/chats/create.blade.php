@@ -54,7 +54,7 @@
     @script
         <script>
             $wire.on('chat:created', (e) => {
-                const mainContainer = 'list-chats';
+                const mainContainer = 'list-chats-0';
                 const currentContainer = 'created-chat';
 
                 requestAnimationFrame(() => {

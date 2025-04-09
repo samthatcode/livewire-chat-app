@@ -1,5 +1,5 @@
 <div
-    class="flex flex-col-reverse gap-4"
+    class="flex flex-col-reverse gap-4 px-4"
     id="list-chats-{{ $offset }}"
 >
     @foreach ($chats as $chat)
@@ -32,7 +32,7 @@
 
     @script
         <script>
-            $wire.on('chats-loaded', (e) => {
+            $wire.on('chats:loaded', (e) => {
                 const mainContainer = 'list-chats-0';
                 const currentContainer = 'list-chats-' + $wire.offset;
 
