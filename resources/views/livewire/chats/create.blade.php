@@ -58,6 +58,7 @@
                 const currentContainer = 'created-chat';
 
                 requestAnimationFrame(() => {
+                    document.getElementById("not-chats-found")?.remove();
                     const currentElement = document.getElementById(currentContainer);
                     const mainElement = document.getElementById(mainContainer);
                     while (currentElement.firstChild) {

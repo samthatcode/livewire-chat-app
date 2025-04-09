@@ -10,7 +10,7 @@
     @endforeach
 
     @if ($offset === 0 && $chats->isEmpty())
-        <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg py-4">
+        <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg py-4" id="not-chats-found">
             <div class="flex items-center gap-3 px-4">
                 <p class="text-gray-500 dark:text-gray-400">No chats found</p>
             </div>
