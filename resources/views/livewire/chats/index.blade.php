@@ -28,7 +28,7 @@
             />
         </div>
         @if ($room !== null)
-            <livewire:chats.create :roomId="$room->id" key="create-chat-{{ $room->id }}" />
+            <livewire:chats.save :roomId="$room->id" key="save-chat-{{ $room->id }}" />
         @endif
     </div>
     @script

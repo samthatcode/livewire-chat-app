@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Chats\Create as CreateChat;
+use App\Livewire\Chats\Save as CreateChat;
 use App\Livewire\Chats\Index as ChatsIndex;
 use App\Livewire\Pages\Chats;
 use App\Livewire\Rooms\Create as CreateRoom;

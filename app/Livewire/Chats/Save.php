@@ -16,7 +16,7 @@ use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class Create extends Component
+class Save extends Component
 {
     #[Locked]
     #[Reactive]
