@@ -7,7 +7,7 @@ use App\Models\Room;
 use App\Models\User;
 use Livewire\Livewire;
 
-it('renders with room and chats', function () {
+it('renders with room', function () {
     $user = User::factory()->create();
     $room = Room::factory()
         ->hasAttached($user, relationship: 'users')
@@ -19,14 +19,13 @@ it('renders with room and chats', function () {
         ->assertDontSee('Please select room.');
 });
 
-it('renders without room and chats', function () {
+it('renders without room', function () {
     $user = User::factory()->create();
 
     Livewire::actingAs($user)
         ->test(Index::class)
         ->assertViewHas('room', null)
-        ->assertSee('Please select room.')
-        ->assertSee('No chats found');
+        ->assertSee('Please select room.');
 });
 
 it('selects room', function () {

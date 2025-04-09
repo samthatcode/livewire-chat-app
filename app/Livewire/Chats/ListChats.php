@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire\Chats;
 
 use App\Models\Chat;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class ListChats extends Component
@@ -35,16 +37,16 @@ class ListChats extends Component
         HTML;
     }
 
-    public function render()
+    public function render(): View
     {
         if ($this->offset > 0) {
-            $this->dispatch('chats:loaded')->self();
+            $this->dispatch('chats:loaded');
         }
 
         return view('livewire.chats.list-chats', [
             'chats' => Chat::query()
                 ->where('room_id', $this->roomId)
-                ->whereHas('room.users', function ($query): void {
+                ->whereHas('room.users', function (Builder $query): void {
                     $query->where('users.id', auth()->id());
                 })
                 ->orderBy('created_at', 'desc')

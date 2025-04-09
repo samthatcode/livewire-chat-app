@@ -62,7 +62,9 @@ class Save extends Component
                 roomId: $this->roomId,
             ))->toOthers();
 
-            $this->dispatch('chat:updated.'.$this->pull('chatId'));
+            $this->dispatch('chat:updated.'.$this->chatId);
+
+            $this->chatId = null;
 
             return;
         }
