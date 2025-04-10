@@ -114,7 +114,7 @@ class Save extends Component
 
     public function render(): View
     {
-        return view('livewire.chats.create', [
+        return view('livewire.save.create', [
             'createdChat' => $this->createdChat,
         ]);
     }
