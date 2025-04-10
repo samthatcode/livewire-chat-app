@@ -11,7 +11,7 @@ it('can render the create chat component', function () {
     Livewire::actingAs(User::factory()->create())
         ->test(Save::class, ['roomId' => Room::factory()->create()->getKey()])
         ->assertStatus(200)
-        ->assertViewIs('livewire.chats.create');
+        ->assertViewIs('livewire.chats.save');
 });
 
 it('validates the message field', function () {

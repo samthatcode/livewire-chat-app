@@ -58,7 +58,6 @@ class User extends Authenticatable
      */
     public function rooms(): BelongsToMany
     {
-        // @phpstan-ignore-next-line
         return $this->belongsToMany(Room::class, 'members')
             ->withTimestamps();
     }
