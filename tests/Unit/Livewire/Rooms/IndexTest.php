@@ -31,3 +31,13 @@ test('sidebar component without rooms', function () {
         ->test(Index::class)
         ->assertSee('No rooms found');
 });
+
+test('sidebar component can show active room', function () {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    Livewire::actingAs($user)
+        ->test(Index::class)
+        ->dispatch('room-selected', id: $room->id)
+        ->assertSet('activeRoomId', $room->id);
+});
