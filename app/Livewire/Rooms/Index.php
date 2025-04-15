@@ -12,6 +12,14 @@ use Livewire\Component;
 #[On('room-created')]
 class Index extends Component
 {
+    public ?int $activeRoomId = null;
+
+    #[On('room-selected')]
+    public function getActiveRoomId(int $id): void
+    {
+        $this->activeRoomId = $id;
+    }
+
     public function render(): View
     {
         return view('livewire.rooms.index', [
