@@ -1,6 +1,6 @@
 # Livewire Chat App
 
-### It's WIP check [Timeline](timeline.md)
+### It's WIP but already usable
 
 ## Getting Started 🚀
 

@@ -40,7 +40,7 @@ class ListChats extends Component
     public function render(): View
     {
         if ($this->offset > 0) {
-            $this->dispatch('chats:loaded');
+            $this->dispatch('chats:loaded')->self();
         }
 
         return view('livewire.chats.list-chats', [
