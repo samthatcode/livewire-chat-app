@@ -20,8 +20,10 @@ test('to array', function () {
 
 test('relationships', function () {
     $chat = Chat::factory()
+        ->for(Chat::factory(), 'parent')
         ->create();
 
     expect($chat->user)->toBeInstanceOf(User::class);
     expect($chat->room)->toBeInstanceOf(Room::class);
+    expect($chat->parent)->toBeInstanceOf(Chat::class);
 });
