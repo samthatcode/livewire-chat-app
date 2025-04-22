@@ -12,11 +12,13 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $parent_id
  * @property int $user_id
  * @property int $room_id
  * @property string $message
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Chat|null $parent
  * @property-read User $user
  * @property-read Room $room
  */
@@ -33,6 +35,16 @@ class Chat extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the parent chat if this is a reply.
+     *
+     * @return BelongsTo<Chat, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Chat::class, 'parent_id');
     }
 
     /**

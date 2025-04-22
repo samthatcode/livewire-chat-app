@@ -8,6 +8,7 @@ use App\Models\Chat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\Features\SupportEvents\Event;
 
 class ListChats extends Component
 {
@@ -40,7 +41,11 @@ class ListChats extends Component
     public function render(): View
     {
         if ($this->offset > 0) {
-            $this->dispatch('chats:loaded')->self();
+            /**
+             * @var Event $event
+             */
+            $event = $this->dispatch('chats:loaded');
+            $event->self();
         }
 
         return view('livewire.chats.list-chats', [

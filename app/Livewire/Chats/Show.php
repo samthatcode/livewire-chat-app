@@ -19,11 +19,34 @@ class Show extends Component
         $this->dispatch('chat-editing', chatId: $this->chat->id, message: $this->chat->message);
     }
 
+    public function reply(): void
+    {
+        $this->dispatch('chat-replying', chatId: $this->chat->id, message: $this->chat->message);
+    }
+
     public function render(): View
     {
+        if ($this->chat->parent_id !== null) {
+            $this->chat->load('parent');
+        }
+
         return view('livewire.chats.show', [
             'chat' => $this->chat,
             'isCurrentUser' => $this->chat->user->id === auth()->id(),
         ]);
+    }
+
+    /**
+     * @return array<array-key, string>
+     */
+    protected function getListeners(): array
+    {
+        if ($this->chat->parent_id !== null) {
+            return [
+                'chat:updated.'.$this->chat->parent_id => '$refresh',
+            ];
+        }
+
+        return [];
     }
 }
