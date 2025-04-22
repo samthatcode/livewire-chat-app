@@ -10,6 +10,7 @@ test('to array', function () {
     $chat = Chat::factory()->create()->fresh();
     expect(array_keys($chat->toArray()))->toEqual([
         'id',
+        'parent_id',
         'user_id',
         'room_id',
         'message',
