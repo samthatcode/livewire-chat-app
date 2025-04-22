@@ -18,7 +18,6 @@ use Illuminate\Support\Carbon;
  * @property string $message
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property-read Chat|null $parent
  * @property-read User $user
  * @property-read Room $room

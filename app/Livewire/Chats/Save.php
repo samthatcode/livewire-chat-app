@@ -86,7 +86,6 @@ class Save extends Component
             return;
         }
 
-
         if ($this->chatId !== null && $this->chatId !== 0) {
             $chat = $room->chats()->findOrFail($this->chatId);
             Gate::denyIf($chat->user_id !== auth()->id(), 'You are not the owner of this chat.');
