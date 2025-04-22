@@ -1,11 +1,18 @@
 <?php
 
 declare(strict_types=1);
+use App\Events\ChatCreated;
+use App\Events\ChatUpdated;
 use App\Livewire\Chats\Save;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
+
+beforeEach(function () {
+    Event::fake();
+});
 
 it('can render the create chat component', function () {
     Livewire::actingAs(User::factory()->create())
@@ -54,6 +61,10 @@ it('can create a chat', function () {
     expect($component->invade()->createdChat)->not->toBeNull();
 
     $this->assertDatabaseHas('chats', ['message' => 'message from John']);
+
+    Event::assertDispatched(ChatCreated::class, function (ChatCreated $event) use ($room) {
+        return $event->roomId === $room->id && $event->chatId === 1;
+    });
 });
 
 it('can not create a chat as an invalid user/member ', function () {
@@ -72,6 +83,7 @@ it('can not create a chat as an invalid user/member ', function () {
         ->call('save')
         ->assertStatus(403);
 
+    Event::assertNotDispatched(ChatCreated::class);
 });
 
 it('can edit a chat', function () {
@@ -99,6 +111,10 @@ it('can edit a chat', function () {
         ->assertDispatched('chat:updated.1');
 
     $this->assertDatabaseHas('chats', ['message' => 'edited message from John']);
+
+    Event::assertDispatched(ChatUpdated::class, function (ChatUpdated $event) use ($room) {
+        return $event->roomId === $room->id && $event->chatId === 1;
+    });
 });
 
 it('can reply to a chat', function () {
@@ -126,6 +142,10 @@ it('can reply to a chat', function () {
         ->assertDispatched('chat:created');
 
     $this->assertDatabaseHas('chats', ['message' => 'reply message from John', 'parent_id' => 1]);
+
+    Event::assertDispatched(ChatCreated::class, function (ChatCreated $event) use ($room) {
+        return $event->roomId === $room->id && $event->chatId === 2;
+    });
 });
 
 it('can not edit a chat as an invalid user/member ', function () {
@@ -152,6 +172,8 @@ it('can not edit a chat as an invalid user/member ', function () {
         ->dispatch('chat-editing', chatId: 1, message: 'edited message from John')
         ->call('save')
         ->assertStatus(403);
+
+    Event::assertNotDispatched(ChatUpdated::class);
 });
 
 it('sets chatId and message for chat-editing event', function () {
