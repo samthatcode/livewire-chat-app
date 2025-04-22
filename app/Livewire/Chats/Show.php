@@ -35,4 +35,18 @@ class Show extends Component
             'isCurrentUser' => $this->chat->user->id === auth()->id(),
         ]);
     }
+
+    /**
+     * @return array<array-key, string>
+     */
+    protected function getListeners(): array
+    {
+        if ($this->chat->parent_id !== null) {
+            return [
+                'chat:updated.'.$this->chat->parent_id => '$refresh',
+            ];
+        }
+
+        return [];
+    }
 }
