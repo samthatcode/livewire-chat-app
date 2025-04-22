@@ -25,3 +25,15 @@ it('can edit', function (): void {
             message: $chat->message,
         );
 });
+
+it('can reply', function (): void {
+    $chat = Chat::factory()->create();
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->call('reply')
+        ->assertDispatched('chat-replying',
+            chatId: $chat->id,
+            message: $chat->message,
+        );
+});

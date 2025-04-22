@@ -101,6 +101,33 @@ it('can edit a chat', function () {
     $this->assertDatabaseHas('chats', ['message' => 'edited message from John']);
 });
 
+it('can reply to a chat', function () {
+
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    // other user
+    $jane = User::factory()->create(['name' => 'Jane Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $jane->id]);
+
+    $room->users()->attach([$john->id, $jane->id]);
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->dispatch('chat-replying', chatId: 1, message: 'reply message from John')
+        ->set('message', 'reply message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    $this->assertDatabaseHas('chats', ['message' => 'reply message from John', 'parent_id' => 1]);
+});
+
 it('can not edit a chat as an invalid user/member ', function () {
 
     $john = User::factory()->create(['name' => 'John Doe']);
@@ -147,6 +174,74 @@ it('sets chatId and message for chat-editing event', function () {
         ->assertSet('message', 'edited message from John');
 });
 
+it('clears the parentId and replyMessage for chat-editing event', function () {
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $john->id]);
+
+    $room->users()->attach([$john->id]);
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Save::class, ['roomId' => $room->id, 'parentId' => 1, 'replyMessage' => 'reply message from John'])
+        ->assertSet('parentId', 1)
+        ->assertSet('replyMessage', 'reply message from John')
+        ->dispatch('chat-editing', chatId: 1, message: 'edited message from John')
+        ->assertSet('parentId', null)
+        ->assertSet('replyMessage', '')
+        ->assertSet('chatId', 1)
+        ->assertSet('message', 'edited message from John');
+});
+
+it('sets parentId and replyMessage for chat-replying event', function () {
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $john->id]);
+
+    $room->users()->attach([$john->id]);
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->dispatch('chat-replying', chatId: 1, message: 'reply message from John')
+        ->assertSet('parentId', 1)
+        ->assertSet('replyMessage', 'reply message from John');
+});
+
+it('clears the chatId and message for chat-replying event', function () {
+    $john = User::factory()->create(['name' => 'John Doe']);
+
+    $this->actingAs($john);
+
+    $room = Room::factory()->create(['user_id' => $john->id]);
+
+    $room->users()->attach([$john->id]);
+
+    Livewire::test(Save::class, ['roomId' => $room->id])
+        ->set('message', 'message from John')
+        ->call('save')
+        ->assertDispatched('chat:created');
+
+    Livewire::test(Save::class, ['roomId' => $room->id, 'chatId' => 1, 'message' => 'message from John'])
+        ->assertSet('chatId', 1)
+        ->assertSet('message', 'message from John')
+        ->dispatch('chat-replying', chatId: 1, message: 'reply message from John')
+        ->assertSet('parentId', 1)
+        ->assertSet('replyMessage', 'reply message from John')
+        ->assertSet('chatId', null)
+        ->assertSet('message', '');
+});
+
 it('can listen to echo events', function (): void {
     $user = User::factory()->create();
     $room = Room::factory()->create();
@@ -183,4 +278,18 @@ it('can cancel the editing', function (): void {
         ->call('cancel')
         ->assertSet('chatId', null)
         ->assertSet('message', '');
+});
+
+it('can cancel the reply', function (): void {
+    Livewire::actingAs(User::factory()->create())
+        ->test(Save::class, [
+            'roomId' => Room::factory()->create()->getKey(),
+            'parentId' => 1,
+            'replyMessage' => 'test message',
+        ])
+        ->assertSet('parentId', 1)
+        ->assertSet('replyMessage', 'test message')
+        ->call('cancel')
+        ->assertSet('parentId', null)
+        ->assertSet('replyMessage', '');
 });
