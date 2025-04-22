@@ -1,78 +1,77 @@
 <div @class([
-    'flex items-center space-x-2',
-    'justify-end' => $isCurrentUser,
+    'flex items-start gap-3 mb-4 animate-fade-in group',
+    'flex-row-reverse' => $isCurrentUser,
 ])>
-    @if (!$isCurrentUser)
-        <figure class="flex shrink-0 self-start">
-            <img
-                src="{{ $chat->user->profile }}"
-                alt="{{ $chat->user->name }}"
-                class="h-8 w-8 object-cover rounded-full"
-            >
-        </figure>
-    @endif
-    <div class="flex flex-col max-w-md">
-        <div @class(['flex items-center mb-1', 'justify-end' => $isCurrentUser])>
-            <small class="text-xs text-gray-500 dark:text-gray-400">
+    <figure class="flex shrink-0 self-start">
+        <img
+            src="{{ $chat->user->profile }}"
+            alt="{{ $chat->user->name }}"
+            class="h-10 w-10 object-cover rounded-full ring-2 ring-offset-2 ring-opacity-50 {{ $isCurrentUser ? 'ring-blue-400' : 'ring-gray-300' }}"
+        >
+    </figure>
+
+    <div class="flex flex-col max-w-md relative">
+        <div @class(['flex items-center mb-1.5', 'justify-end' => $isCurrentUser])>
+            <small class="font-medium text-xs text-gray-600 dark:text-gray-300">
                 {{ $chat->user->name }}
             </small>
             @if ($chat->updated_at > $chat->created_at)
-                <span class="text-xs text-gray-400 dark:text-gray-500 mx-1">(edited)</span>
+                <span class="text-xs text-gray-400 dark:text-gray-500 mx-1.5 italic">(edited)</span>
             @endif
         </div>
 
         <div @class([
-            'relative group ps-6 rounded-lg',
+            'relative rounded-lg',
             'text-right' => $isCurrentUser,
         ])>
+            <!-- Action buttons made smaller -->
             <div @class([
-                'inline-block p-3 rounded-lg shadow-sm',
+                'absolute top-8 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex-col',
+                '-left-5 -translate-x-full' => !$isCurrentUser,
+                '-right-5 translate-x-full' => $isCurrentUser,
+            ])>
+                <button
+                    wire:click="edit"
+                    class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
+                    title="Edit message"
+                >
+                    <x-icons.edit class="h-3 w-3" />
+                </button>
+
+                <button
+                    wire:click="reply"
+                    class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
+                    title="Reply to message"
+                >
+                    <x-icons.reply class="h-3 w-3" />
+                </button>
+            </div>
+
+            <div @class([
+                'inline-block p-3.5 rounded-xl shadow-md',
                 'bg-blue-500 text-white rounded-tr-none' => $isCurrentUser,
                 'bg-gray-100 dark:bg-gray-700 dark:text-gray-200 rounded-tl-none' => !$isCurrentUser,
             ])>
                 @if ($chat->parent)
                     <div
-                        class="mb-3 p-2 border-l-2 rounded-sm text-xs bg-opacity-20 dark:bg-opacity-20 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-gray-500">
+                        class="mb-3 p-2.5 border-l-3 rounded-md text-xs bg-opacity-25 dark:bg-opacity-25 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-gray-500">
                         <p
-                            class="truncate text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                            class="truncate text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                             <x-icons.reply
-                                class="text-gray-400 dark:text-gray-500"
+                                class="text-gray-400 dark:text-gray-500 h-3.5 w-3.5"
                             />
                             {{ Str::limit($chat->parent->message, 100) }}
                         </p>
                     </div>
                 @endif
-                <p class="text-sm">
+                <p class="text-sm leading-relaxed">
                     {{ $chat->message }}
                 </p>
             </div>
-
-            <button
-                wire:click="edit"
-                class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-1 left-0 p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-            >
-                <x-icons.edit />
-            </button>
-
-            <button
-                wire:click="reply"
-                class="opacity-0 group-hover:opacity-100 transition-opacity absolute top-5 left-0 p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-            >
-                <x-icons.reply />
-            </button>
         </div>
 
-        <div @class(['text-xs text-gray-400 mt-1', 'text-right' => $isCurrentUser])>
+        <div @class(['text-xs text-gray-400 mt-1.5', 'text-right' => $isCurrentUser])>
             {{ $chat->updated_at->diffForHumans() }}
         </div>
     </div>
-    @if ($isCurrentUser)
-        <figure class="flex shrink-0 self-start">
-            <img
-                src="{{ $chat->user->profile }}"
-                alt="{{ $chat->user->name }}"
-                class="h-8 w-8 object-cover rounded-full"
-            >
-        </figure>
-    @endif
 </div>
