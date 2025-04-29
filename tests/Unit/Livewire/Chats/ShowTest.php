@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Livewire\Chats\Show;
 use App\Models\Chat;
+use App\Models\User;
 use Livewire\Livewire;
 
 it('can render', function (): void {
@@ -53,4 +54,16 @@ it('can refresh when parent chat is updated', function (): void {
     $component->assertSee('Original message')
         ->dispatch('chat:updated.'.$parentChat->id)
         ->assertSee('Updated message');
+});
+
+it('only shows the edit button if the user is the owner of the chat', function (): void {
+    $chat = Chat::factory()->create();
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertSeeHtml('wire:click="edit"');
+
+    Livewire::actingAs(User::factory()->create())
+        ->test(Show::class, ['chat' => $chat])
+        ->assertDontSeeHtml('wire:click="edit"');
 });

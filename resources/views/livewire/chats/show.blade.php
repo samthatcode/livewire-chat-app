@@ -30,13 +30,15 @@
                 '-left-5 -translate-x-full' => !$isCurrentUser,
                 '-right-5 translate-x-full' => $isCurrentUser,
             ])>
-                <button
-                    wire:click="edit"
-                    class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
-                    title="Edit message"
-                >
-                    <x-icons.edit class="h-3 w-3" />
-                </button>
+                @if($isCurrentUser)
+                    <button
+                        wire:click="edit"
+                        class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
+                        title="Edit message"
+                    >
+                        <x-icons.edit class="h-3 w-3" />
+                    </button>
+                @endif
 
                 <button
                     wire:click="reply"
