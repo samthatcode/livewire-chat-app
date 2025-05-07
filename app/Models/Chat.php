@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Override;
 
 /**
  * @property int $id
@@ -18,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $message
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read Chat|null $parent
  * @property-read User $user
  * @property-read Room $room
@@ -55,5 +57,18 @@ class Chat extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    #[Override]
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
     }
 }

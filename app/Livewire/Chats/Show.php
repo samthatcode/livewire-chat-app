@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Chats;
 
+use App\Events\ChatUpdated;
 use App\Models\Chat;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -19,6 +20,20 @@ class Show extends Component
         $this->dispatch('chat-editing', chatId: $this->chat->id, message: $this->chat->message);
     }
 
+    public function delete(): void
+    {
+        abort_unless($this->isCurrentUser(), 403, 'You are not authorized to delete this chat.');
+
+        $this->chat->touch('deleted_at');
+
+        broadcast(new ChatUpdated(
+            chatId: $this->chat->id,
+            roomId: $this->chat->room_id,
+        ))->toOthers();
+
+        $this->dispatch('chat:updated.'.$this->chat->id);
+    }
+
     public function reply(): void
     {
         $this->dispatch('chat-replying', chatId: $this->chat->id, message: $this->chat->message);
@@ -32,7 +47,7 @@ class Show extends Component
 
         return view('livewire.chats.show', [
             'chat' => $this->chat,
-            'isCurrentUser' => $this->chat->user->id === auth()->id(),
+            'isCurrentUser' => $this->isCurrentUser(),
         ]);
     }
 
@@ -48,5 +63,10 @@ class Show extends Component
         }
 
         return [];
+    }
+
+    private function isCurrentUser(): bool
+    {
+        return $this->chat->user->id === auth()->id();
     }
 }
