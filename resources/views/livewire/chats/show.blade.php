@@ -38,6 +38,16 @@
                     >
                         <x-icons.edit class="h-3 w-3" />
                     </button>
+
+                    @if($chat->deleted_at === null)
+                        <button
+                            wire:click="delete"
+                            class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 dark:hover:text-red-400 shadow-sm"
+                            title="Delete message"
+                        >
+                            <x-icons.trash class="h-3 w-3" />
+                        </button>
+                    @endif
                 @endif
 
                 <button
@@ -54,21 +64,33 @@
                 'bg-blue-500 text-white rounded-tr-none' => $isCurrentUser,
                 'bg-gray-100 dark:bg-gray-700 dark:text-gray-200 rounded-tl-none' => !$isCurrentUser,
             ])>
-                @if ($chat->parent)
-                    <div
-                        class="mb-3 p-2.5 border-l-3 rounded-md text-xs bg-opacity-25 dark:bg-opacity-25 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-gray-500">
-                        <p
-                            class="truncate text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
-                            <x-icons.reply
-                                class="text-gray-400 dark:text-gray-500 h-3.5 w-3.5"
-                            />
-                            {{ Str::limit($chat->parent->message, 100) }}
-                        </p>
-                    </div>
+                @if($chat->deleted_at === null)
+                    @if ($chat->parent)
+                        <div
+                            class="mb-3 p-2.5 border-l-3 rounded-md text-xs bg-opacity-25 dark:bg-opacity-25 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-gray-500">
+                            <p
+                                class="truncate text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                                <x-icons.reply
+                                    class="text-gray-400 dark:text-gray-500 h-3.5 w-3.5"
+                                />
+                                @if ($chat->parent->deleted_at === null)
+                                    {{ Str::limit($chat->parent->message, 100) }}
+                                @else
+                                    <span class="text-red-400 dark:text-red-500">
+                                        This message has been deleted.
+                                    </span>
+                                @endif
+                            </p>
+                        </div>
+                    @endif
+                    <p class="text-sm leading-relaxed">
+                        {{ $chat->message }}
+                    </p>
+                @else
+                    <p class="text-sm leading-relaxed text-red-400 dark:text-red-500">
+                        This message has been deleted.
+                    </p>
                 @endif
-                <p class="text-sm leading-relaxed">
-                    {{ $chat->message }}
-                </p>
             </div>
         </div>
 
