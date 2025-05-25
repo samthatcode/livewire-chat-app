@@ -2,7 +2,7 @@
     <div class="mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <h1 class="hidden md:block text-2xl font-bold text-gray-800 dark:text-gray-100">Chats</h1>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-sm"
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 md:py-2 md:px-2 rounded-sm"
                 x-on:click="$dispatch('open-modal', 'create-room')"
                 title="Create Room"
             >
