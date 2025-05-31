@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table): void {
             $table->id();
+            $table->foreignIdFor(Chat::class, 'parent_id')->nullable();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Room::class);
             $table->text('message');
