@@ -1,4 +1,4 @@
-<aside class="bg-white dark:bg-gray-800 w-16 md:w-1/4  border-r border-gray-700">
+<aside class="bg-white dark:bg-gray-800 w-16 md:w-1/4 border-r border-gray-700">
     <div class="mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <h1 class="hidden md:block text-2xl font-bold text-gray-800 dark:text-gray-100">Chats</h1>
