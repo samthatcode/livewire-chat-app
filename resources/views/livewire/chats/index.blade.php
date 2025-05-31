@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-800 w-3/4">
+<div class="bg-white dark:bg-gray-800 w-full md:w-3/4">
     <div class="container mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-3">
