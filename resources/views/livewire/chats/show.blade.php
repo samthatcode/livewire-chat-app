@@ -64,7 +64,7 @@
                         'bg-white dark:bg-gray-800 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400' => $chat->favouritedBy->doesntContain(auth()->id()),
                         'bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400' => $chat->favouritedBy->contains(auth()->id())
                     ])
-                    title="Mark/UnMark as favourite"
+                    title="{{ $chat->favouritedBy->contains(auth()->id()) ? 'Remove from favourite chats' : 'Mark as favourite' }}"
                 >
                     <x-icons.star @class([
                         'h-3 w-3',
