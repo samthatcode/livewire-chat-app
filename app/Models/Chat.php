@@ -8,6 +8,7 @@ use Database\Factories\ChatFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use Override;
 
@@ -23,6 +24,7 @@ use Override;
  * @property-read Chat|null $parent
  * @property-read User $user
  * @property-read Room $room
+ * @property-read User[] $favouritedBy
  */
 class Chat extends Model
 {
@@ -57,6 +59,16 @@ class Chat extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * Get the users who marked this chat as a favourite chat.
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function favouritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'chat_user_favourites', 'chat_id', 'user_id');
     }
 
     /**
