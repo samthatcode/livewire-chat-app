@@ -39,7 +39,7 @@ class Show extends Component
         $this->dispatch('chat-replying', chatId: $this->chat->id, message: $this->chat->message);
     }
 
-    public function markAsFavourite(): void
+    public function toggleFavourite(): void
     {
         $this->chat->favouritedBy()->toggle(auth()->id());
     }

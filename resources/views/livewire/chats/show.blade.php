@@ -58,13 +58,13 @@
                     <x-icons.reply class="h-3 w-3"/>
                 </button>
                 <button
-                    wire:click="markAsFavourite"
+                    wire:click="toggleFavourite"
                     @class([
                         'p-1 rounded-full text-gray-500 shadow-sm',
                         'bg-white dark:bg-gray-800 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400' => $chat->favouritedBy->doesntContain(auth()->id()),
                         'bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400' => $chat->favouritedBy->contains(auth()->id())
                     ])
-                    title="Mark as favourite"
+                    title="Mark/UnMark as favourite"
                 >
                     <x-icons.star @class([
                         'h-3 w-3',
