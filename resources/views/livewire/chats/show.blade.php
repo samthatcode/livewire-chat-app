@@ -15,7 +15,7 @@
             <small class="font-medium text-xs text-gray-600 dark:text-gray-300">
                 {{ $chat->user->name }}
             </small>
-            @if ($chat->updated_at > $chat->created_at)
+            @if ($chat->updated_at > $chat->created_at && is_null($chat->deleted_at) )
                 <span class="text-xs text-gray-400 dark:text-gray-500 mx-1.5 italic">(edited)</span>
             @endif
         </div>
