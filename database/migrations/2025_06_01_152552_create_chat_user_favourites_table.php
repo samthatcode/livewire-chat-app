@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chat_user_favourites', function (Blueprint $table): void {
+        Schema::create('chat_user_favourite', function (Blueprint $table): void {
             $table->foreignIdFor(Chat::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
