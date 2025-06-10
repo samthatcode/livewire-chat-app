@@ -68,7 +68,7 @@ class Chat extends Model
      */
     public function favouritedBy(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'chat_user_favourites', 'chat_id', 'user_id');
+        return $this->belongsToMany(User::class, 'chat_user_favourite', 'chat_id', 'user_id');
     }
 
     /**
