@@ -50,7 +50,8 @@
                     @endif
                 @endif
 
-                @if(is_null($chat->deleted_at))
+                @if (is_null($chat->deleted_at))
+                    
                     <button
                         wire:click="reply"
                         class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
@@ -58,8 +59,22 @@
                     >
                         <x-icons.reply class="h-3 w-3"/>
                     </button>
-                @endif
-
+                    
+                    <button
+                        wire:click="toggleFavourite"
+                        @class([
+                            'p-1 rounded-full text-gray-500 shadow-sm',
+                            'bg-white dark:bg-gray-800 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400' => $chat->favouritedBy->doesntContain(auth()->id()),
+                            'bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400' => $chat->favouritedBy->contains(auth()->id())
+                        ])
+                        title="{{ $chat->favouritedBy->contains(auth()->id()) ? 'Remove from favourite chats' : 'Mark as favourite' }}"
+                    >
+                        <x-icons.star @class([
+                            'h-3 w-3',
+                            'text-blue-500' => $chat->favouritedBy->contains(auth()->id()),
+                        ])/>
+                    </button>
+                @endif                
             </div>
 
             <div @class([
