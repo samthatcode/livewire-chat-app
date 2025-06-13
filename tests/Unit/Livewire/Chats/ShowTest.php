@@ -157,5 +157,6 @@ it('can toggle chat as favourite', function (): void {
         ->call('toggleFavourite')
         ->assertSeeHtml('Mark as favourite');
 
+    $chat->refresh();
     expect($chat->favouritedBy()->count())->toBe(1);
 });
