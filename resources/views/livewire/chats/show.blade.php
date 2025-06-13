@@ -29,28 +29,24 @@
                 'absolute top-8 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex-col',
                 '-left-5 -translate-x-full' => !$isCurrentUser,
                 '-right-5 translate-x-full' => $isCurrentUser,
-            ])>
-                @if($isCurrentUser)
-                    <button
-                        wire:click="edit"
-                        class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
-                        title="Edit message"
-                    >
-                        <x-icons.edit class="h-3 w-3"/>
-                    </button>
-
-                    @if($chat->deleted_at === null)
-                        <button
-                            wire:click="delete"
-                            class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 dark:hover:text-red-400 shadow-sm"
-                            title="Delete message"
-                        >
-                            <x-icons.trash class="h-3 w-3"/>
-                        </button>
-                    @endif
-                @endif
-
+            ])>                
                 @if (is_null($chat->deleted_at))
+                    @if ($isCurrentUser)
+                        <button
+                            wire:click="edit"
+                            class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 shadow-sm"
+                            title="Edit message"
+                        >
+                            <x-icons.edit class="h-3 w-3"/>
+                        </button>
+                        <button
+                                wire:click="delete"
+                                class="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 dark:hover:text-red-400 shadow-sm"
+                                title="Delete message"
+                            >
+                                <x-icons.trash class="h-3 w-3"/>
+                            </button>
+                    @endif
                     
                     <button
                         wire:click="reply"
