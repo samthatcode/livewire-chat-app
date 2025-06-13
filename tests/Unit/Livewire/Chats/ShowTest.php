@@ -28,7 +28,8 @@ it('can edit', function (): void {
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
         ->call('edit')
-        ->assertDispatched('chat-editing',
+        ->assertDispatched(
+            'chat-editing',
             chatId: $chat->id,
             message: $chat->message,
         );
@@ -40,7 +41,8 @@ it('can reply', function (): void {
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
         ->call('reply')
-        ->assertDispatched('chat-replying',
+        ->assertDispatched(
+            'chat-replying',
             chatId: $chat->id,
             message: $chat->message,
         );
@@ -59,7 +61,7 @@ it('can refresh when parent chat is updated', function (): void {
     $parentChat->update(['message' => 'Updated message']);
 
     $component->assertSee('Original message')
-        ->dispatch('chat:updated.'.$parentChat->id)
+        ->dispatch('chat:updated.' . $parentChat->id)
         ->assertSee('Updated message');
 });
 
@@ -80,8 +82,9 @@ it('can delete', function (): void {
 
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
+        ->call('confirmDelete', $chat->id)
         ->call('delete')
-        ->assertDispatched('chat:updated.'.$chat->id);
+        ->assertDispatched('chat:updated.' . $chat->id);
 
     expect($chat->fresh()->deleted_at)->not()->toBeNull();
 
@@ -100,29 +103,30 @@ it('can not delete if the user is not the owner of the chat', function (): void 
 });
 
 it('only shows the delete button if the user is the owner of the chat', function (): void {
-    $chat = Chat::factory()->create();
-
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertSeeHtml('wire:click="delete"');
+        ->assertSee("confirmDelete({$chat->id})");
 
     Livewire::actingAs(User::factory()->create())
         ->test(Show::class, ['chat' => $chat])
-        ->assertDontSeeHtml('wire:click="delete"');
+        ->assertDontSee("confirmDelete({$chat->id})");
 });
 
 it('only shows the delete button if the chat is not deleted', function (): void {
-    $chat = Chat::factory()->create();
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
 
-    Livewire::actingAs($chat->user)
+    Livewire::actingAs($user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertSeeHtml('wire:click="delete"');
+        ->assertSee("confirmDelete({$chat->id})");
 
     $chat->touch('deleted_at');
 
-    Livewire::actingAs($chat->user)
+    Livewire::actingAs($user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertDontSeeHtml('wire:click="delete"');
+        ->assertDontSee("confirmDelete({$chat->id})");
 });
 
 it('can toggle chat as favourite', function (): void {
@@ -159,4 +163,46 @@ it('can toggle chat as favourite', function (): void {
 
     $chat->refresh();
     expect($chat->favouritedBy()->count())->toBe(1);
+});
+
+it('displays confirmation prompt when delete is initiated', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    Livewire::actingAs($user)
+        ->test(Show::class, ['chat' => $chat])
+        ->call('confirmDelete', $chat->id)
+        ->assertSet('confirmingDelete', $chat->id)
+        ->assertSee('Are you sure you want to delete this message?');
+});
+
+it('cancels delete and clears confirmation prompt', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    Livewire::actingAs($user)
+        ->test(Show::class, ['chat' => $chat])
+        ->call('confirmDelete', $chat->id)
+        ->call('cancelDelete')
+        ->assertSet('confirmingDelete', null)
+        ->assertDontSee('Are you sure you want to delete this message?');
+});
+
+
+it('confirms delete and removes message', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->call('confirmDelete', $chat->id)
+        ->call('delete', $chat->id)
+        ->assertSet('confirmingDelete', null)
+        ->assertDispatched('chat:updated.' . $chat->id);
+
+    expect($chat->fresh()->deleted_at)->not()->toBeNull();
+
+    Event::assertDispatched(ChatUpdated::class, function (ChatUpdated $event) use ($chat): bool {
+        return $event->chatId === $chat->id && $event->roomId === $chat->room_id;
+    });
 });

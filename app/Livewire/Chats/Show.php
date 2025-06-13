@@ -14,24 +14,38 @@ use Livewire\Component;
 class Show extends Component
 {
     public Chat $chat;
+    public $confirmingDelete = null;
 
     public function edit(): void
     {
         $this->dispatch('chat-editing', chatId: $this->chat->id, message: $this->chat->message);
     }
 
+    public function confirmDelete($messageId): void
+    {
+        $this->confirmingDelete = $messageId;
+    }
+
+    public function cancelDelete(): void
+    {
+        $this->confirmingDelete = null;
+    }
+
     public function delete(): void
     {
         abort_unless($this->isCurrentUser(), 403, 'You are not authorized to delete this chat.');
-
-        $this->chat->touch('deleted_at');
+        if ($this->isCurrentUser()) {
+            $this->chat->touch('deleted_at');
+            $this->confirmingDelete = null;
+            $this->dispatch('chat:deleted', chatId: $this->chat->id);
+        }
 
         broadcast(new ChatUpdated(
             chatId: $this->chat->id,
             roomId: $this->chat->room_id,
         ))->toOthers();
 
-        $this->dispatch('chat:updated.'.$this->chat->id);
+        $this->dispatch('chat:updated.' . $this->chat->id);
     }
 
     public function reply(): void
@@ -63,7 +77,7 @@ class Show extends Component
     {
         if ($this->chat->parent_id !== null) {
             return [
-                'chat:updated.'.$this->chat->parent_id => '$refresh',
+                'chat:updated.' . $this->chat->parent_id => '$refresh',
             ];
         }
 
