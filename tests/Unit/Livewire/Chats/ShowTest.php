@@ -198,6 +198,8 @@ it('confirms delete and removes message', function (): void {
         ->call('confirmDelete', $chat->id)
         ->call('delete')
         ->assertSet('confirmingDelete', null)
+        // Copilot suggested ['chatId' => $chat->id] but it failed the test.
+        // Named argument format worked and passed.
         ->assertDispatched('chat:deleted', chatId: $chat->id);
 
     expect($chat->fresh()->deleted_at)->not()->toBeNull();
