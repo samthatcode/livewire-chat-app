@@ -14,6 +14,7 @@ use Livewire\Component;
 class Show extends Component
 {
     public Chat $chat;
+
     public ?int $confirmingDelete = null;
 
     public function edit(): void
@@ -43,7 +44,7 @@ class Show extends Component
             roomId: $this->chat->room_id,
         ))->toOthers();
 
-        $this->dispatch('chat:updated.' . $this->chat->id);
+        $this->dispatch('chat:updated.'.$this->chat->id);
     }
 
     public function reply(): void
@@ -75,7 +76,7 @@ class Show extends Component
     {
         if ($this->chat->parent_id !== null) {
             return [
-                'chat:updated.' . $this->chat->parent_id => '$refresh',
+                'chat:updated.'.$this->chat->parent_id => '$refresh',
             ];
         }
 

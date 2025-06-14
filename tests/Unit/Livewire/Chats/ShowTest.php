@@ -61,7 +61,7 @@ it('can refresh when parent chat is updated', function (): void {
     $parentChat->update(['message' => 'Updated message']);
 
     $component->assertSee('Original message')
-        ->dispatch('chat:updated.' . $parentChat->id)
+        ->dispatch('chat:updated.'.$parentChat->id)
         ->assertSee('Updated message');
 });
 
@@ -187,7 +187,6 @@ it('cancels delete and clears confirmation prompt', function (): void {
         ->assertSet('confirmingDelete', null)
         ->assertDontSee('Are you sure you want to delete this message?');
 });
-
 
 it('confirms delete and removes message', function (): void {
     $user = User::factory()->create();
