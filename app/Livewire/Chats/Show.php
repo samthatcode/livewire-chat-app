@@ -21,9 +21,9 @@ class Show extends Component
         $this->dispatch('chat-editing', chatId: $this->chat->id, message: $this->chat->message);
     }
 
-    public function confirmDelete($messageId): void
+    public function confirmDelete(int $chatId): void
     {
-        $this->confirmingDelete = $messageId;
+        $this->confirmingDelete = $chatId;
     }
 
     public function cancelDelete(): void

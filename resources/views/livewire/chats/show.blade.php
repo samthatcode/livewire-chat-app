@@ -101,9 +101,10 @@
     </div>
     <!-- Confirmation Modal -->
     @if ($confirmingDelete === $chat->id)
-        <div class="fixed inset-0 bg-black opacity-40 flex items-center justify-center z-50">
+        <div class="fixed inset-0 bg-black opacity-40 flex items-center justify-center z-50" role="dialog"
+            aria-modal="true" aria-labelledby="deleteModalTitle">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full shadow-xl">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                <h3 id="deleteModalTitle" class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                     Delete Message
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-100 mb-6">
