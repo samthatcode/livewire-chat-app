@@ -196,9 +196,9 @@ it('confirms delete and removes message', function (): void {
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
         ->call('confirmDelete', $chat->id)
-        ->call('delete', $chat->id)
+        ->call('delete')
         ->assertSet('confirmingDelete', null)
-        ->assertDispatched('chat:updated.' . $chat->id);
+        ->assertDispatched('chat:deleted', chatId: $chat->id);
 
     expect($chat->fresh()->deleted_at)->not()->toBeNull();
 

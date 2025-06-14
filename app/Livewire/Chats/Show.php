@@ -14,7 +14,7 @@ use Livewire\Component;
 class Show extends Component
 {
     public Chat $chat;
-    public $confirmingDelete = null;
+    public ?int $confirmingDelete = null;
 
     public function edit(): void
     {
@@ -34,11 +34,9 @@ class Show extends Component
     public function delete(): void
     {
         abort_unless($this->isCurrentUser(), 403, 'You are not authorized to delete this chat.');
-        if ($this->isCurrentUser()) {
-            $this->chat->touch('deleted_at');
-            $this->confirmingDelete = null;
-            $this->dispatch('chat:deleted', chatId: $this->chat->id);
-        }
+        $this->chat->touch('deleted_at');
+        $this->confirmingDelete = null;
+        $this->dispatch('chat:deleted', chatId: $this->chat->id);
 
         broadcast(new ChatUpdated(
             chatId: $this->chat->id,
