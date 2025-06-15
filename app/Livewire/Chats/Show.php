@@ -15,28 +15,15 @@ class Show extends Component
 {
     public Chat $chat;
 
-    public ?int $confirmingDelete = null;
-
     public function edit(): void
     {
         $this->dispatch('chat-editing', chatId: $this->chat->id, message: $this->chat->message);
-    }
-
-    public function confirmDelete(int $chatId): void
-    {
-        $this->confirmingDelete = $chatId;
-    }
-
-    public function cancelDelete(): void
-    {
-        $this->confirmingDelete = null;
     }
 
     public function delete(): void
     {
         abort_unless($this->isCurrentUser(), 403, 'You are not authorized to delete this chat.');
         $this->chat->touch('deleted_at');
-        $this->confirmingDelete = null;
         $this->dispatch('chat:deleted', chatId: $this->chat->id);
 
         broadcast(new ChatUpdated(

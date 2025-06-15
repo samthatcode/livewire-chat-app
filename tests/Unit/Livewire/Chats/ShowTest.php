@@ -82,7 +82,6 @@ it('can delete', function (): void {
 
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
-        ->call('confirmDelete', $chat->id)
         ->call('delete')
         ->assertDispatched('chat:deleted', chatId: $chat->id);
 
@@ -107,11 +106,11 @@ it('only shows the delete button if the user is the owner of the chat', function
     $chat = Chat::factory()->create(['user_id' => $user->id]);
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertSee("confirmDelete({$chat->id})");
+        ->assertSeeHtml('title="Delete message"');
 
     Livewire::actingAs(User::factory()->create())
         ->test(Show::class, ['chat' => $chat])
-        ->assertDontSee("confirmDelete({$chat->id})");
+        ->assertDontSeeHtml('title="Delete message"');
 });
 
 it('only shows the delete button if the chat is not deleted', function (): void {
@@ -120,13 +119,13 @@ it('only shows the delete button if the chat is not deleted', function (): void 
 
     Livewire::actingAs($user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertSee("confirmDelete({$chat->id})");
+        ->assertSeeHtml('title="Delete message"');
 
     $chat->touch('deleted_at');
 
     Livewire::actingAs($user)
         ->test(Show::class, ['chat' => $chat])
-        ->assertDontSee("confirmDelete({$chat->id})");
+        ->assertDontSeeHtml('title="Delete message"');
 });
 
 it('can toggle chat as favourite', function (): void {
@@ -165,38 +164,13 @@ it('can toggle chat as favourite', function (): void {
     expect($chat->favouritedBy()->count())->toBe(1);
 });
 
-it('displays confirmation prompt when delete is initiated', function (): void {
-    $user = User::factory()->create();
-    $chat = Chat::factory()->create(['user_id' => $user->id]);
-
-    Livewire::actingAs($user)
-        ->test(Show::class, ['chat' => $chat])
-        ->call('confirmDelete', $chat->id)
-        ->assertSet('confirmingDelete', $chat->id)
-        ->assertSee('Are you sure you want to delete this message?');
-});
-
-it('cancels delete and clears confirmation prompt', function (): void {
-    $user = User::factory()->create();
-    $chat = Chat::factory()->create(['user_id' => $user->id]);
-
-    Livewire::actingAs($user)
-        ->test(Show::class, ['chat' => $chat])
-        ->call('confirmDelete', $chat->id)
-        ->call('cancelDelete')
-        ->assertSet('confirmingDelete', null)
-        ->assertDontSee('Are you sure you want to delete this message?');
-});
-
-it('confirms delete and removes message', function (): void {
+it('deletes message when confirmed', function (): void {
     $user = User::factory()->create();
     $chat = Chat::factory()->create(['user_id' => $user->id]);
 
     Livewire::actingAs($chat->user)
         ->test(Show::class, ['chat' => $chat])
-        ->call('confirmDelete', $chat->id)
         ->call('delete')
-        ->assertSet('confirmingDelete', null)
         ->assertDispatched('chat:deleted', chatId: $chat->id);
 
     expect($chat->fresh()->deleted_at)->not()->toBeNull();
@@ -204,4 +178,63 @@ it('confirms delete and removes message', function (): void {
     Event::assertDispatched(ChatUpdated::class, function (ChatUpdated $event) use ($chat): bool {
         return $event->chatId === $chat->id && $event->roomId === $chat->room_id;
     });
+});
+
+it('only renders delete confirmation modal if user is the owner of the chat', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    // Owner should see the modal
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertSeeHtml('confirm-chat-deletion-'.$chat->id)
+        ->assertSeeHtml('Delete Message');
+
+    // Non-owner should not see the modal
+    Livewire::actingAs(User::factory()->create())
+        ->test(Show::class, ['chat' => $chat])
+        ->assertDontSeeHtml('confirm-chat-deletion-'.$chat->id)
+        ->assertDontSeeHtml('Delete Message');
+});
+
+it('only renders delete confirmation modal if chat is not deleted', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    // Non-deleted chat should show modal
+    Livewire::actingAs($user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertSeeHtml('confirm-chat-deletion-'.$chat->id)
+        ->assertSeeHtml('Delete Message');
+
+    // Deleted chat should not show modal
+    $chat->touch('deleted_at');
+
+    Livewire::actingAs($user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertDontSeeHtml('confirm-chat-deletion-'.$chat->id)
+        ->assertDontSeeHtml('Delete Message');
+});
+
+it('renders modal with correct chat ID in the Alpine.js event listeners', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertSeeHtml('confirm-chat-deletion-'.$chat->id)
+        ->assertSeeHtml('x-on:open-modal.window')
+        ->assertSeeHtml('x-on:close-modal.window');
+});
+
+it('modal contains correct action buttons', function (): void {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    Livewire::actingAs($chat->user)
+        ->test(Show::class, ['chat' => $chat])
+        ->assertSeeHtml('Cancel')
+        ->assertSeeHtml('Delete')
+        ->assertSeeHtml('wire:click="delete"')
+        ->assertSeeHtml('confirm-chat-deletion-'.$chat->id);
 });
